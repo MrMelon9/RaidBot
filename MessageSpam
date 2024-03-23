@@ -32,7 +32,7 @@ async def send_everyone_ping():
                 await channel.send('@everyone') # you can edit the content of this bracket if you want the bot to send something else
 
         # Cooldown
-        await asyncio.sleep(1)  # 3600 sekúnd = 1 hodina
+        await asyncio.sleep(1)  # 3600 seconds = 1 hour
 
 # START
 client.run(TOKEN)
