@@ -22,7 +22,7 @@ async def on_ready():
 # Function to send @everyone ping
 async def send_everyone_ping():
     while True:
-        # Replace these server ID with the ID of the server where you want to ping
+        # Replace server ID with the ID of the server where you want to ping
         server_id = 0000000000000
 
         guild = client.get_guild(server_id)
