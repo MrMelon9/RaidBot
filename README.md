@@ -1,5 +1,5 @@
 # RaidBot
-A simple technique to attack the server and raid the server (this bot is only set up for learning procedures and I am not responsible for any damages)
+A simple technique to raid the server (this bot is only set up for learning procedures and I am not responsible for any damages)
 
 # Define your Discord token
 You can find your discord BOT token in the developer portal on discord
