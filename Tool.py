@@ -1,54 +1,53 @@
 import discord
 import asyncio
 
-# Define your Discord token
-TOKEN = 'Your Discord Bot Token'
+# Replace 'YOUR_TOKEN_HERE' with your bot's token
+TOKEN = 'YOUR_TOKEN_HERE'
 
-# Create a client instance
 intents = discord.Intents.default()
 intents.typing = False
 intents.presences = False
 client = discord.Client(intents=intents)
 
-# Global variable to hold the number of channels created
 channel_counter = 1
 
-# Event handler for bot login
 @client.event
 async def on_ready():
-     print(f'Logged in as {client.user.name} ({client.user.id})')
-     print('------')
+    print(f'Logged in as {client.user.name} ({client.user.id})')
+    print('------')
 
-     # Run a loop to create new channels
-     await create_new_channel_every_hour()
+    await create_new_channel_every_second()
 
-# Function to create new channels every hour
-async def create_new_channel_every_hour():
-     global channel_counter # Define global variable usage
+async def create_new_channel_every_second():
+    global channel_counter
 
-     while True:
-         # Get the server (guild) where the bot is active
-         guild = client.get_guild(00000000000000) # Replace with your server ID
+    while True:
+        # Replace 'YOUR_GUILD_ID_HERE' with your server ID
+        guild = client.get_guild(YOUR_GUILD_ID_HERE)
 
-         # Create a new channel named "new-channelX", where X is a numeric index
-         channel_name = f'NewChannel{channel_counter}' # Change "NewChannel" to the name of the channel you want to spam everywhere
-         existing_channel = discord.utils.get(guild.text_channels, name=channel_name)
-         if not existing_channel:
-             await guild.create_text_channel(channel_name)
-             print(f'Created new channel: {channel_name}')
-             channel_counter += 1 # Increase the numeric index
+        channel_name = f'NewChannel{channel_counter}'
+        existing_channel = discord.utils.get(guild.text_channels, name=channel_name)
+        if not existing_channel:
+            try:
+                new_channel = await guild.create_text_channel(channel_name)
+                print(f'Created new channel: {channel_name}')
+                channel_counter += 1
 
-             # Ping @everyone
-             new_channel = discord.utils.get(guild.text_channels, name=channel_name)
-             await send_everyone_ping_with_gifs(new_channel)
+                if new_channel:
+                    await send_everyone_ping(new_channel)
+            except discord.Forbidden:
+                print("Bot doesn't have permissions to create channels.")
+            except discord.HTTPException as e:
+                print(f"An error occurred: {e}")
 
-         # Cooldown
-         await asyncio.sleep(1) # 3600 seconds = 1 hour
+        await asyncio.sleep(1)
 
-# Function to send @everyone ping
-async def send_everyone_ping_with_gifs(channel):
-     # Ping @everyone
-     await channel.send('@everyone')
+async def send_everyone_ping(channel):
+    try:
+        await channel.send('@everyone')
+    except discord.Forbidden:
+        print("Bot doesn't have permissions to send messages in this channel.")
+    except discord.HTTPException as e:
+        print(f"An error occurred: {e}")
 
-# Start the bot
 client.run(TOKEN)
